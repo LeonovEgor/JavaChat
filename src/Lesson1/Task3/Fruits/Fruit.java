@@ -1,9 +1,9 @@
-package Lesson1.Task3;
+package Lesson1.Task3.Fruits;
 
 public abstract class Fruit {
-    protected int weight;
+    protected double weight;
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 }

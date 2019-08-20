@@ -1,7 +1,7 @@
-package Lesson1.Task3;
+package Lesson1.Task3.Fruits;
 
 public class Apple extends Fruit {
-    Apple() {
-        weight = 
+    public Apple() {
+        weight = 1.0f;
     }
 }
