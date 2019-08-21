@@ -1,18 +1,13 @@
 package Lesson1.Task3.Boxes;
 
 import Lesson1.Task3.Fruits.Fruit;
-
 import java.util.ArrayList;
 
-public class Box<E extends Fruit> implements Weightable {
+public class Box<E extends Fruit> {
     private ArrayList<E> fruits;
 
     public Box() {
         fruits = new ArrayList<>();
-    }
-
-    public ArrayList<E> getFruits() {
-        return fruits;
     }
 
     public void add(E fruit) { fruits.add(fruit); }
@@ -31,9 +26,7 @@ public class Box<E extends Fruit> implements Weightable {
     }
 
     public void shift(Box<E> box) {
-        box.getFruits().addAll(fruits);
+        box.fruits.addAll(fruits);
         fruits.clear();
     }
-
-
 }
