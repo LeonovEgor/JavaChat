@@ -77,7 +77,8 @@ public class Client implements MessageSendable {
                         "Невозможно определить результат авторизации."));
                 continue;
             }
-            if (message.getMessageType().equals(MessageType.AUTH_OK)) {
+            if (message.getMessageType().equals(MessageType.AUTH_OK) ||
+                    message.getMessageType().equals(MessageType.REGISTRATION_OK)) {
                 nick = message.getNickFrom();
                 isAuthorized = true;
                 authRegistrator.fireAction(nick);
@@ -147,7 +148,12 @@ public class Client implements MessageSendable {
 
     @Override
     public void Auth(String login, int passHash) {
-        sendObject(new ChatMessage(login, passHash));
+        sendObject(new ChatMessage(login, passHash, false));
+    }
+
+    @Override
+    public void registration(String login, int passHash) {
+        sendObject(new ChatMessage(login, passHash, true));
     }
 
 }

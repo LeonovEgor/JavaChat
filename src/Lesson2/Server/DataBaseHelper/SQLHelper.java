@@ -30,11 +30,7 @@ public class SQLHelper {
         String qry = String.format("SELECT nickname FROM users where login = '%s' and password = %d", login, passHash);
         ResultSet rs = stmt.executeQuery(qry);
 
-        if (rs.next()) {
-            return rs.getString(NICK_NAME);
-        }
-
-        return null;
+        return rs.next() ? rs.getString(NICK_NAME) : null;
     }
 
     private static int getIdByNick(String nick) throws SQLException {
@@ -42,9 +38,7 @@ public class SQLHelper {
         String qry = String.format("SELECT * FROM users WHERE nickname = '%s'", nick);
         ResultSet rs = stmt.executeQuery(qry);
 
-        if (rs.next()) return rs.getInt("id");
-
-        return -1;
+        return rs.next() ? rs.getInt("id") : -1;
     }
 
     public static boolean isBlockedUser(String nick, String checkedNick) throws SQLException {
@@ -77,4 +71,37 @@ public class SQLHelper {
             e.printStackTrace();
         }
     }
+
+    public static boolean hasUser(String login) throws SQLException {
+
+        String qry = String.format("SELECT * FROM users WHERE users.login = '%s' ", login);
+        ResultSet rs = stmt.executeQuery(qry);
+
+        return rs.next();
+    }
+
+    public static boolean AddNewUser(String login, int passHash) {
+
+        try {
+            int id = getMaxId() + 1;
+            if (id == -1) return false;
+            String qry = String.format("INSERT INTO users (id, login, password, nickname) " +
+                    " VALUES (%d, '%s', %d, '%s')", id, login, passHash, login);
+            stmt.execute(qry);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private static int getMaxId() throws SQLException {
+        String qry = "SELECT MAX(id) as id FROM users";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        return rs.next() ? rs.getInt("id") : -1;
+    }
+
+
 }

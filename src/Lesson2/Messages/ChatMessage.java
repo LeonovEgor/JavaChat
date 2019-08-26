@@ -31,9 +31,10 @@ public class ChatMessage implements Serializable {
         this(new Date(), nick, nick, messageType, message);
     }
 
-    public ChatMessage(String login, int passHash) {
+    public ChatMessage(String login, int passHash, boolean newUser) {
         this.date = new Date();
-        this.messageType = MessageType.AUTH;
+        if (newUser) this.messageType = MessageType.REGISTRATION;
+        else this.messageType = MessageType.AUTH;
         this.login = login;
         this.passHash = passHash;
     }

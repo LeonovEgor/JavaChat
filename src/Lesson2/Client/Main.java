@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application implements AuthListener {
-    private static final int WIDTH = 400;
+    private static final int WIDTH = 530;
     private static final int HEIGHT = 600;
     private static final int MIN_HEIGHT = 300;
     private static final int MIN_WIDTH = 200;

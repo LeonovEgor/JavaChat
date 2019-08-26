@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?scenebulder-stylesheet /css/Style.css?>
 
-<VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="Lesson2.Client.FXUI.Controller">
+<VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="Lesson2.Client.FXUI.Controller" >
     <stylesheets><URL value="@/Lesson2/Client/css/Style.css" /></stylesheets>
 
     <HBox fx:id="upperPanel" alignment="CENTER_LEFT" minHeight="50" prefHeight="50">
@@ -21,7 +21,9 @@
         <TextField fx:id="loginField" promptText="Логин" VBox.vgrow="ALWAYS" />
         <PasswordField fx:id="passwordField" onAction="#tryToAuth" promptText="Пароль" />
         <Button onAction="#tryToAuth" text="Авторизоваться" HBox.hgrow="ALWAYS" />
+        <Button onAction="#registration" text="Регистрация" HBox.hgrow="ALWAYS" />
     </HBox>
+
     <ListView fx:id="lvHistory" VBox.vgrow="ALWAYS" />
     <HBox fx:id="bottomPanel">
         <TextField fx:id="tfMessage" onAction="#sendMessage" promptText="Введите сообщение" HBox.hgrow="ALWAYS" />

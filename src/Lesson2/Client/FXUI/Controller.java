@@ -7,6 +7,7 @@ import Lesson2.Messages.ChatMessage;
 import Lesson2.Client.NET.MessageSendable;
 import Lesson2.Messages.MessageType;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -83,6 +84,10 @@ public class Controller implements MessageListener, AuthListener, Initializable 
             sender.Auth(loginField.getText(), passwordField.getText().hashCode());
     }
 
+    public void registration(ActionEvent actionEvent) {
+        sender.registration(loginField.getText(), passwordField.getText().hashCode());
+    }
+
     @Override
     public void mlPerformAction(ChatMessage message) {
         if (message.getMessageType().equals(MessageType.END)) {
@@ -104,4 +109,5 @@ public class Controller implements MessageListener, AuthListener, Initializable 
     public void initialize(URL location, ResourceBundle resources) {
         lvHistory.setCellFactory(chatListView -> new ChatListViewCell(nick));
     }
+
 }

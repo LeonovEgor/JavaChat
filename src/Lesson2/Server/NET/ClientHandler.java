@@ -101,25 +101,63 @@ public class ClientHandler {
             }
 
             if (message.getMessageType().equals(MessageType.AUTH)) {
-                String newNick = SQLHelper.getNickByLoginAndPass(message.getLogin(), message.getPassHash());
-                if (newNick != null) {
-                    if (server.isAlreadyConnected(newNick)) {
-                        sendObject(new ChatMessage(MessageType.AUTH_ERROR,
-                                nick, "Повторное подключение запрещено"));
-                        continue;
-                    }
+                if (auth(message)) break;
+                else continue;
+            }
 
-                    nick = newNick;
+            if (message.getMessageType().equals(MessageType.REGISTRATION)) {
+                if (registration(message)) break;
+                else continue;
+            }
+        }
+    }
+
+    private boolean registration(ChatMessage message) {
+        try {
+            boolean hasUser = SQLHelper.hasUser(message.getLogin());
+            if (hasUser) {
+                sendObject(new ChatMessage(MessageType.REGISTRATION_ERROR, message.getLogin(), "Логин уже занят"));
+                return false;
+            } else {
+                boolean res = SQLHelper.AddNewUser(message.getLogin(), message.getPassHash());
+                if (res) {
+                    nick = message.getLogin();
                     server.sendMessage(new ChatMessage(MessageType.INFO_MESSAGE, nick,
-                            String.format("Подключился пользователь %s", nick))); // Всем, что клиент подключился
+                            String.format("Подключился новый пользователь %s", nick))); // Всем, что клиент подключился
                     server.addClient(ClientHandler.this);
-                    sendObject(new ChatMessage(MessageType.AUTH_OK, nick, "")); // Клиенту о том, что все в порядке
-                    break;
+                    sendObject(new ChatMessage(MessageType.REGISTRATION_OK, nick, "")); // Клиенту о том, что все в порядке
+                    return true;
                 } else {
-                    sendObject(new ChatMessage(MessageType.AUTH_ERROR,
-                            message.getLogin(), "Неверный логин или пароль"));
+                    sendObject(new ChatMessage(MessageType.REGISTRATION_ERROR,
+                            message.getLogin(), "Что-то пошло не так на сервере"));
+                    return false;
                 }
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean auth(ChatMessage message) throws SQLException {
+        String newNick = SQLHelper.getNickByLoginAndPass(message.getLogin(), message.getPassHash());
+        if (newNick != null) {
+            if (server.isAlreadyConnected(newNick)) {
+                sendObject(new ChatMessage(MessageType.AUTH_ERROR,
+                        nick, "Повторное подключение запрещено"));
+                return false;
+            }
+
+            nick = newNick;
+            server.sendMessage(new ChatMessage(MessageType.INFO_MESSAGE, nick,
+                    String.format("Подключился пользователь %s", nick))); // Всем, что клиент подключился
+            server.addClient(ClientHandler.this);
+            sendObject(new ChatMessage(MessageType.AUTH_OK, nick, "")); // Клиенту о том, что все в порядке
+            return true;
+        } else {
+            sendObject(new ChatMessage(MessageType.AUTH_ERROR,
+                    message.getLogin(), "Неверный логин или пароль"));
+            return false;
         }
     }
 
