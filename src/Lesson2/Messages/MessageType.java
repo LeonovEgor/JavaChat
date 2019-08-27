@@ -12,5 +12,8 @@ public enum MessageType {
     BROADCAST_MESSAGE, // Сообщение всем
     ERROR_MESSAGE, // Ошибка при разборе сообщения
     INFO_MESSAGE, // Информационные сообщения
-    ADD_BLOCK
+    ADD_BLOCK, // Блокировка другого пользователя
+    CHANGE_NICK, // Изменение Ника пользователя
+    CHANGE_NICK_OK, // Успешное изменение Nick пользователя
+    CHANGE_NICK_ERROR, // Имя пользователя изменить не удалось
 }

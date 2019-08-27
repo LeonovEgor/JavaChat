@@ -39,6 +39,13 @@ public class ChatMessage implements Serializable {
         this.passHash = passHash;
     }
 
+    public ChatMessage(MessageType type, String newNick) {
+        this.date = new Date();
+        this.messageType = type;
+        this.nickFrom = newNick;
+        this.nickTo = newNick;
+    }
+
     public Date getDate() {
         return date;
     }

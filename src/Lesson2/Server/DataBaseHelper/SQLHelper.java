@@ -80,6 +80,14 @@ public class SQLHelper {
         return rs.next();
     }
 
+    public static boolean hasUserByNick(String nick) throws SQLException {
+
+        String qry = String.format("SELECT * FROM users WHERE users.nickname = '%s' ", nick);
+        ResultSet rs = stmt.executeQuery(qry);
+
+        return rs.next();
+    }
+
     public static boolean AddNewUser(String login, int passHash) {
 
         try {
@@ -104,4 +112,19 @@ public class SQLHelper {
     }
 
 
+    public static boolean ChangeNick(String currentNick, String newNick) {
+        boolean res;
+        try {
+            if (!hasUserByNick(currentNick)) res = false;
+            else {
+                String qry = String.format("UPDATE users SET nickname = '%s' WHERE nickname = '%s'", newNick, currentNick);
+                stmt.execute(qry);
+                res = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            res = false;
+        }
+        return res;
+    }
 }

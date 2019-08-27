@@ -33,13 +33,13 @@ public class ClientHandler {
 
             new Thread(() -> {
                 try {
-                    waitForAuth();
-                    if (!isEnding) waitForMessage();
+                    waitForAuth(); // Ожидание авторизации
+                    if (!isEnding) waitForMessage(); // Обработка сообщений
                 } catch (IOException | SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
                 } finally {
                     closeConnection();
-                    System.out.println(String.format("Соединение  закрыто: %s", info()));
+                    System.out.println(String.format("Сервер завершил работу: %s", info()));
                 }
             }).start();
 
@@ -48,49 +48,8 @@ public class ClientHandler {
         }
     }
 
-    private void waitForMessage() throws IOException {
-        while (true) {
-            ChatMessage message;
-            try {
-                message = (ChatMessage) in.readObject();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                System.out.println("Сообщение принято, но не может быть десериализовано.");
-                continue;
-            }
-            System.out.println(String.format("Client %s: %s ", info(), message.getMessage()));
-
-            if (message.getMessageType().equals(MessageType.END)) {
-                ending();
-                break;
-            }
-            if (message.getMessageType().equals(MessageType.ADD_BLOCK)){
-                blockng(message);
-                break;
-            }
-            server.sendMessage(message);
-        }
-    }
-
-    private void blockng(ChatMessage message) {
-        SQLHelper.AddBlock(message.getNickFrom(), message.getNickTo());
-    }
-
-    private void ending() {
-        isEnding = true;
-        sendObject(new ChatMessage(MessageType.END, nick, ""));
-        server.removeClient(ClientHandler.this);
-
-        // сообщить остальным
-        server.sendMessage(
-                new ChatMessage(
-                        MessageType.INFO_MESSAGE,
-                        "Server",
-                        String.format("Отключился пользователь %s", nick)
-                )
-        );
-    }
-
+    // Ожидание сервисных команд до авторизации
+    // авторизация, регистрация или окончание работы
     private void waitForAuth() throws IOException, SQLException, ClassNotFoundException {
         while (true) {
             ChatMessage message = (ChatMessage) in.readObject();
@@ -112,6 +71,7 @@ public class ClientHandler {
         }
     }
 
+    // Регистрация нового пользователя
     private boolean registration(ChatMessage message) {
         try {
             boolean hasUser = SQLHelper.hasUser(message.getLogin());
@@ -139,6 +99,72 @@ public class ClientHandler {
         }
     }
 
+    // Ожидание сообщения или сервисных команд после авторизации
+    private void waitForMessage() throws IOException {
+        while (true) {
+            ChatMessage message;
+            try {
+                message = (ChatMessage) in.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Сообщение принято, но не может быть десериализовано.");
+                continue;
+            }
+            System.out.println(String.format("Client %s: %s ", info(), message.getMessage()));
+
+            if (message.getMessageType().equals(MessageType.END)) {
+                ending();
+                break;
+            }
+            if (message.getMessageType().equals(MessageType.ADD_BLOCK)){
+                blocking(message);
+                continue;
+            }
+            if (message.getMessageType().equals(MessageType.CHANGE_NICK)) {
+                changeNick(message.getNickTo());
+                continue;
+            }
+            server.sendMessage(message);
+        }
+    }
+
+    // Изменение Nick пользователя
+    private void changeNick(String newNick) {
+        boolean res = SQLHelper.ChangeNick(this.nick, newNick);
+
+        // сообщить остальным
+        if (res) {
+            String oldNick = this.nick;
+            this.nick = newNick;
+            server.sendMessage(new ChatMessage(MessageType.INFO_MESSAGE,
+                    "Server", String.format("Пользователь %s изменил свое имя на %s", oldNick, newNick)));
+            server.sendMessage(new ChatMessage(MessageType.CHANGE_NICK_OK,
+                    newNick, String.format("Имя пользователя успешно изменено с %s на %s", oldNick, newNick)));
+        }
+        else server.sendMessage( new ChatMessage( MessageType.CHANGE_NICK_ERROR,
+                "Server", "Не удалось изменить имя"));
+
+
+    }
+
+    // Блокировка пользователя другим пользователем
+    private void blocking(ChatMessage message) {
+        SQLHelper.AddBlock(message.getNickFrom(), message.getNickTo());
+    }
+
+    // Завершение работы
+    private void ending() {
+        isEnding = true;
+        sendObject(new ChatMessage(MessageType.END, nick, ""));
+        server.removeClient(ClientHandler.this);
+
+        // сообщить остальным
+        server.sendMessage( new ChatMessage( MessageType.INFO_MESSAGE,
+                        "Server", String.format("Отключился пользователь %s", nick)));
+    }
+
+
+    // Авторизация
     private boolean auth(ChatMessage message) throws SQLException {
         String newNick = SQLHelper.getNickByLoginAndPass(message.getLogin(), message.getPassHash());
         if (newNick != null) {
@@ -179,7 +205,7 @@ public class ClientHandler {
         }
     }
 
-    public void sendObject(ChatMessage message) {
+    void sendObject(ChatMessage message) {
         try {
             out.writeObject(message);
         } catch (IOException e) {
@@ -187,7 +213,7 @@ public class ClientHandler {
         }
     }
 
-    public String info() {
+    String info() {
         return socket != null ?
                 String.format("Клиент: адрес: %s ник: %s", socket.getInetAddress(), nick)
                 : "Socket не создан!";

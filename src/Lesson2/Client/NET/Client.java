@@ -103,6 +103,10 @@ public class Client implements MessageSendable {
             }
 
             messageRegistrator.fireAction(message);
+            if (message.getMessageType().equals(MessageType.CHANGE_NICK_OK)) {
+                nick = message.getNickFrom();
+                authRegistrator.fireAction(nick);
+            }
             if (message.getMessageType().equals(MessageType.END)) {
                 closeConnection();
                 break;
@@ -135,6 +139,13 @@ public class Client implements MessageSendable {
             String[] token = text.split(" ", 2);
             message = new ChatMessage(new Date(), this.nick, token[1], MessageType.ADD_BLOCK, "");
         }
+        else if (text.startsWith("/changenick")) { // изменение имени
+            String[] token = text.split(" ", 2);
+            if (token.length > 1) message = new ChatMessage(MessageType.CHANGE_NICK, token[1]);
+            else message = new ChatMessage(new Date(), this.nick, "", MessageType.ERROR_MESSAGE,
+                        "Формат: /changenick nickname");
+        }
+
         else if (text.startsWith("/w") && text.length() > 4) { // приватное сообщение
             String[] token = text.split(" ", 3);
             message = new ChatMessage(new Date(), this.nick, token[1], MessageType.PRIVATE_MESSAGE, token[2]);

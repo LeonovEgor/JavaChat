@@ -75,6 +75,11 @@ public class ChatServer {
                             MessageType.ERROR_MESSAGE, "Пользователь с таким ником не подключен")); // себе
                 }
                 break;
+            case CHANGE_NICK_OK:
+            case CHANGE_NICK_ERROR:
+                handler = getClient(message.getNickFrom());
+                handler.sendObject(message); // себе
+                break;
             case BROADCAST_MESSAGE: // сообщения всем
                 for (ClientHandler ch: clients) {
                     try {
