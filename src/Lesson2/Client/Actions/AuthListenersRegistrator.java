@@ -17,7 +17,7 @@ public class AuthListenersRegistrator {
 
     public void fireAction(String nick){
         for (AuthListener listener : listeners) {
-            listener.alPerformAction(nick);
+            listener.AuthListenerPerformAction(nick);
         }
     }
 }

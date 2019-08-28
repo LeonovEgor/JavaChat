@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements MessageListener, AuthListener, Initializable {
@@ -100,7 +101,7 @@ public class Controller implements MessageListener, AuthListener, Initializable 
     }
 
     @Override
-    public void alPerformAction(String nick) {
+    public void AuthListenerPerformAction(String nick) {
         setAuthorized(true);
         lvHistory.setCellFactory(chatListView -> new ChatListViewCell(nick));
     }
@@ -108,6 +109,10 @@ public class Controller implements MessageListener, AuthListener, Initializable 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lvHistory.setCellFactory(chatListView -> new ChatListViewCell(nick));
+    }
+
+    public void setHistory(ArrayList<ChatMessage> list) {
+        lvHistory.getItems().addAll(list);
     }
 
 }

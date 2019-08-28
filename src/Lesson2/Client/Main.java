@@ -78,7 +78,7 @@ public class Main extends Application implements AuthListener {
     }
 
     @Override
-    public void alPerformAction(String nick) {
+    public void AuthListenerPerformAction(String nick) {
         Platform.runLater((() -> primaryStage.setTitle("Simple Messenger - " + nick)));
         this.nick = nick;
         controller.setNick(nick);

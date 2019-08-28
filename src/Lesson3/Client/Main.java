@@ -7,6 +7,7 @@ import Lesson2.Client.FXUI.Controller;
 import Lesson2.Client.NET.Client;
 import Lesson2.Messages.ChatMessage;
 import Lesson2.Messages.MessageType;
+import Lesson3.Client.Storage.StorageHelper;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main extends Application implements AuthListener {
     private static final int WIDTH = 530;
@@ -32,6 +34,8 @@ public class Main extends Application implements AuthListener {
     private Controller controller;
     private String nick;
 
+    private MessageListenersRegistrator messageListenersRegistrator;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
@@ -44,7 +48,7 @@ public class Main extends Application implements AuthListener {
         primaryStage.setMinWidth(MIN_WIDTH);
 
         //////
-        MessageListenersRegistrator messageListenersRegistrator = new MessageListenersRegistrator();
+        messageListenersRegistrator = new MessageListenersRegistrator();
         AuthListenersRegistrator authListenersRegistrator = new AuthListenersRegistrator();
 
         client = new Client(messageListenersRegistrator, authListenersRegistrator);
@@ -57,6 +61,8 @@ public class Main extends Application implements AuthListener {
         controller = loader.getController();
         controller.setAuthorized(false);
         messageListenersRegistrator.addListener(controller);
+
+
         authListenersRegistrator.addListener(controller);
         authListenersRegistrator.addListener(this);
         controller.setSender(client);
@@ -78,10 +84,17 @@ public class Main extends Application implements AuthListener {
     }
 
     @Override
-    public void alPerformAction(String nick) {
+    public void AuthListenerPerformAction(String nick) {
         Platform.runLater((() -> primaryStage.setTitle("Simple Messenger - " + nick)));
         this.nick = nick;
         controller.setNick(nick);
+        StorageHelper storageHelper = new StorageHelper("message_"+nick+".msg");
+        Platform.runLater(( () -> {
+            ArrayList<ChatMessage> list = storageHelper.getMessage();
+            controller.setHistory(list);
+        }));
+        messageListenersRegistrator.addListener(storageHelper);
+
     }
 }
 

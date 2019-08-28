@@ -3,7 +3,7 @@ package Lesson2.Messages;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ChatMessage implements Serializable {
+public class ChatMessage implements Serializable{
 
     private Date date;
     private String nickFrom;
