@@ -16,7 +16,10 @@ public class StorageHelper implements MessageListener {
     }
 
     public ArrayList<ChatMessage> getMessage() {
-        return storage.readMessage();
+        ArrayList<ChatMessage> source = storage.readMessage();
+        ArrayList<ChatMessage> dest = new ArrayList<>();
+        dest.addAll(source.size() < 100 ? 0: source.size()-100, source);
+        return dest;
     }
 
     @Override
