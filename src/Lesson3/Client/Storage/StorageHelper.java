@@ -2,6 +2,7 @@ package Lesson3.Client.Storage;
 
 import Lesson2.Client.Actions.MessageListener;
 import Lesson2.Messages.ChatMessage;
+import Lesson2.Messages.MessageType;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,12 @@ public class StorageHelper implements MessageListener {
 
     @Override
     public void mlPerformAction(ChatMessage message) {
-        storage.saveMessage(message);
+        if (message.getMessageType().equals(MessageType.BROADCAST_MESSAGE) ||
+                message.getMessageType().equals(MessageType.PRIVATE_MESSAGE)) {
+            boolean res = storage.saveMessage(message);
+            if (!res) System.out.println("Не удалось сохранить сообщение");
+        }
+        else System.out.println("Cервисное сообщение. Сохранение не требуется.");
     }
 
 

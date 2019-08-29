@@ -73,6 +73,17 @@ public class ChatMessage implements Serializable{
     public int getPassHash() {
         return passHash;
     }
+
+    @Override
+    public String toString() {
+        return "ChatMessage\n" + "date " + date + "\n" +
+                "nickFrom " + nickFrom + "\n" +
+                "nickTo " + nickTo + "\n" +
+                "message " + message + "\n" +
+                "messageType " + messageType + "\n" +
+                "login " + login + "\n" +
+                "passHash " + passHash + "\n";
+    }
 }
 
 

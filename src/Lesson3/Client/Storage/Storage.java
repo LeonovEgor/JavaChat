@@ -12,23 +12,14 @@ class Storage<T> {
         this.fileName = fileName;
     }
 
-    boolean  saveMessage(T object)  {
+    boolean saveMessage(T object)  {
         boolean res = false;
-        boolean fileExists = false;
         File file = new File(fileName);
-        if (file.exists()) fileExists = true;
         try {
-            //FileOutputStream fos = new FileOutputStream(file, true);
-            ObjectOutputStream out  = fileExists ? new AppendingObjectOutputStream(new FileOutputStream(fileName, true))
-                : new ObjectOutputStream(new FileOutputStream(fileName, true));
+            ObjectOutputStream out  = file.exists() ?
+                    new AppendingObjectOutputStream(new FileOutputStream(fileName, true))
+                    : new ObjectOutputStream(new FileOutputStream(fileName, true));
 
-
-            if (!fileExists)
-            //AppendingObjectOutputStream out = new AppendingObjectOutputStream(fos);
-
-            //if (!fileExists) out.writeStreamHeader();
-
-            out.flush();
             out.writeObject(object);
             out.flush();
             out.close();
@@ -45,12 +36,12 @@ class Storage<T> {
 
         File file = new File(fileName);
         if (!file.exists()) {
-            System.out.println("Файл не найден: " + fileName);
+            System.out.println("Нет данных для загрузки. Файл отсутствует: " + fileName);
         }
         else {
+            ObjectInputStream in = null;
                try {
-                   FileInputStream fileIn = new FileInputStream(fileName);
-                   ObjectInputStream in = new ObjectInputStream(fileIn);
+                   in = new ObjectInputStream(new FileInputStream(fileName));
 
                    Object obj;
                    while (true) {
@@ -61,8 +52,10 @@ class Storage<T> {
                        System.out.println(obj.toString());
                    }
                    in.close();
-                   fileIn.close();
-               } catch (ClassNotFoundException | IOException e) {
+               } catch (EOFException ex) {
+                   //
+               }
+               catch (ClassNotFoundException | IOException e) {
                    e.printStackTrace();
                }
         }
