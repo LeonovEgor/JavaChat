@@ -31,8 +31,8 @@ class Storage<T> {
         return res;
     }
 
-    ArrayList<ChatMessage> readMessage() {
-        ArrayList<ChatMessage> list = new ArrayList<>();
+    ArrayList<T> readMessage() {
+        ArrayList<T> list = new ArrayList<>();
 
         File file = new File(fileName);
         if (!file.exists()) {
@@ -48,7 +48,7 @@ class Storage<T> {
                        obj = in.readObject();
                        if (obj == null) break;
 
-                       list.add((ChatMessage)obj);
+                       list.add((T)obj);
                        System.out.println(obj.toString());
                    }
                    in.close();

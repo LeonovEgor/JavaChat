@@ -7,8 +7,8 @@ import Lesson2.Messages.MessageType;
 import java.util.ArrayList;
 
 public class StorageHelper implements MessageListener {
-    String fileName;
-    Storage<ChatMessage> storage;
+    private String fileName;
+    private Storage<ChatMessage> storage;
 
     public StorageHelper(String fileName) {
         this.fileName = fileName;
