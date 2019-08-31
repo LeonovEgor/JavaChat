@@ -1,11 +1,11 @@
 package Lesson4.Task1;
 
-public class Varian1 {
+public class Variant1 {
     private final Object mon = new Object();
     private volatile char currentLetter = 'A';
 
     public static void main(String[] args) {
-        Varian1 w = new Varian1();
+        Variant1 w = new Variant1();
         Thread t1 = new Thread(() -> {
             w.printA();
         });
