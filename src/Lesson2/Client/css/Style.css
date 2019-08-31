@@ -1,0 +1,53 @@
+.root {
+      -fx-background-color: #2f2f2f;
+}
+
+.list-view {
+    -fx-background-image: url(../Media/background.JPG);
+    -fx-background-size: 100% 100%;
+}
+
+.list-view .list-cell:even {
+    -fx-background-color: transparent;
+}
+.list-view .list-cell:odd {
+    -fx-background-color: transparent;
+}
+
+#vBoxCell {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+#lblNickFrom, #lblNickTo {
+    -fx-font: 12px Tahoma, bold;
+    -fx-background-color: transparent;
+    -fx-text-fill: orange;
+}
+
+#lblTime {
+    -fx-font: 10px Tahoma;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+#lblMessage {
+    -fx-font: 16px Tahoma;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.text-field {
+  -fx-background-color: #2f2f2f;
+  -fx-text-fill: white;
+}
+
+.text-field:focused {
+    -fx-background-color: #1f1f1f;
+}
+
+#btnSend {
+  -fx-background-color: #036da0;
+  -fx-text-fill: white;
+}
