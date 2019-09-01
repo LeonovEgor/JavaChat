@@ -22,7 +22,7 @@ public class ClientHandler {
         return nick != null ? nick : "" ;
     };
 
-    public ClientHandler(ChatServer server, Socket socket, ExecutorService executorService) {
+    ClientHandler(ChatServer server, Socket socket, ExecutorService executorService) {
         if (socket == null) throw new IllegalArgumentException("Socket не может быть null");
         this.socket = socket;
         this.server = server;

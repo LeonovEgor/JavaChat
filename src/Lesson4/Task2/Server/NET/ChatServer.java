@@ -16,7 +16,7 @@ public class ChatServer {
     private static final int USERS_PARALLEL = 100;
     private Vector<ClientHandler> clients;
     
-    ExecutorService executorService = Executors.newFixedThreadPool(USERS_PARALLEL); // число пользующихся чатом одновременно ограничено 100
+    private ExecutorService executorService = Executors.newFixedThreadPool(USERS_PARALLEL); // число пользующихся чатом одновременно ограничено 100
     //ExecutorService executorService = Executors.newCachedThreadPool(); // - Если мы захотим не ограничивать число одновременно пользующихся чатом
     private ServerSocket serverSocket = null;
     private Socket socket = null;
