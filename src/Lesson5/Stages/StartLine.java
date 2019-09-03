@@ -8,6 +8,7 @@ public class StartLine extends Stage {
 
     private CountDownLatch countdown;
 
+
     public StartLine(int carCount) {
         countdown = new CountDownLatch(carCount);
     }
@@ -15,4 +16,5 @@ public class StartLine extends Stage {
     public void go(Car car) {
         countdown.countDown();
     }
+
 }

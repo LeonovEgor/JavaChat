@@ -9,5 +9,5 @@ public abstract class Stage {
     public String getDescription() {
         return description;
     }
-    public abstract void go(Car c);
+    public abstract void go(Car car);
 }
