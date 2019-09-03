@@ -1,5 +1,8 @@
-package Lesson5;
+package Lesson5.Stages;
 
+import Lesson5.Players.Car;
+
+// Туннель
 public class Tunnel extends Stage {
     public Tunnel() {
         this.length = 80;

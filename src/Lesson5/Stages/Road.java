@@ -1,5 +1,8 @@
-package Lesson5;
+package Lesson5.Stages;
 
+import Lesson5.Players.Car;
+
+// Трасса
 public class Road extends Stage {
     public Road(int length) {
         this.length = length;

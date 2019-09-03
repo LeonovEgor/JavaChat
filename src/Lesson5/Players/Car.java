@@ -1,4 +1,4 @@
-package Lesson5;
+package Lesson5.Players;
 
 import Lesson5.Game.Race;
 
