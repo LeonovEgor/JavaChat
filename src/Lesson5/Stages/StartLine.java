@@ -9,12 +9,17 @@ public class StartLine extends Stage {
     private CountDownLatch countdown;
 
 
-    public StartLine(int carCount) {
-        countdown = new CountDownLatch(carCount);
+    public StartLine(CountDownLatch countdown) {
+        this.countdown = countdown;
     }
     @Override
     public void go(Car car) {
         countdown.countDown();
+        try {
+            countdown.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -10,12 +10,15 @@ public class Car implements Runnable {
     private Race race;
     private int speed;
     private String name;
+
     public String getName() {
         return name;
     }
+
     public int getSpeed() {
         return speed;
     }
+
     public Car(Race race, int speed) {
         this.race = race;
         this.speed = speed;
@@ -28,6 +31,9 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
             System.out.println(this.name + " готов");
+            race.getCountdown().countDown(); // еще одна машина готова
+            race.getCountdown().await(); // Ждем готовности остальных
+
         } catch (Exception e) {
             e.printStackTrace();
         }
