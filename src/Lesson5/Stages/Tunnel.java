@@ -6,15 +6,12 @@ import java.util.concurrent.Semaphore;
 
 // Туннель
 public class Tunnel extends Stage {
-    private int trafficCapacity;
-    private Semaphore semaphore; // Будет задерживать автомобили больше допустимого количества у въезда в туннель
+    private Semaphore semaphore;
 
-    public Tunnel(int trafficCapacity, int length, Semaphore semaphore) {
+    public Tunnel( int length, int trafficCapacity) {
         this.length = length;
         this.description = "Тоннель " + length + " метров";
-        this.trafficCapacity = trafficCapacity;
-
-        this.semaphore = semaphore;
+        semaphore = new Semaphore(trafficCapacity);
     }
 
     @Override
@@ -22,7 +19,6 @@ public class Tunnel extends Stage {
         try {
             try {
                 System.out.println(car.getName() + " готовится к этапу(ждет): " + description);
-                System.out.println("В туннеле свободно для " + semaphore.availablePermits() + " машин");
                 semaphore.acquire();
 
                 System.out.println(car.getName() + " начал этап: " + description);
