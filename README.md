@@ -15,6 +15,6 @@ Chat training project in Java
 - база данных на Sqlite; 
 - работа с сетью; 
 - работа с потоками; 
-- Swing;
+- JavaFx;
 - Maven; 
 и другие.
