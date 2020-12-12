@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?scenebulder-stylesheet /css/Style.css?>
+
+<HBox fx:id="hBoxCell" spacing="3.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121">
+    <VBox fx:id="vBoxCell" alignment="CENTER_LEFT">
+        <stylesheets><URL value="@/css/Style.css" /></stylesheets>
+        <HBox fx:id="captionPanel" spacing="3.0" VBox.vgrow="ALWAYS">
+            <Label fx:id="lblNickFrom" alignment="TOP_LEFT" >
+             <HBox.margin>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+             </HBox.margin></Label>
+            <Label text=" - " />
+            <Label fx:id="lblNickTo" alignment="TOP_LEFT" minWidth="30">
+                <HBox.margin>
+                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                </HBox.margin></Label>
+            <Label fx:id="lblTime">
+             <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+             </padding></Label>
+        </HBox>
+        <Label fx:id="lblMessage" />
+    </VBox>
+</HBox>
