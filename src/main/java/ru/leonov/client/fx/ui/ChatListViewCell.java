@@ -52,10 +52,10 @@ public class ChatListViewCell extends ListCell<ChatMessage> {
         }
 
         this.nick = nick;
-        this.lblNickFrom.setText("");
-        this.lblTime.setText("");
-        this.lblMessage.setText("");
-        this.lblNickTo.setText("");
+        lblNickFrom.setText("");
+        lblTime.setText("");
+        lblMessage.setText("");
+        lblNickTo.setText("");
     }
 
     @Override
@@ -72,26 +72,31 @@ public class ChatListViewCell extends ListCell<ChatMessage> {
             lblTime.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(message.getDate()));
             lblMessage.setText(message.getMessage());
 
-            if (message.getMessageType().equals(MessageType.BROADCAST_MESSAGE) ||
-                    message.getMessageType().equals(MessageType.PRIVATE_MESSAGE)) { // сообщения
-                if (message.getNickFrom().equals(nick)) { // свои
-                    vBoxCell.setAlignment(Pos.CENTER_RIGHT);
-                    vBoxCell.setStyle("-fx-background-color: rgba(255, 165, 0, 0.3);");
-                    captionPanel.setAlignment(Pos.CENTER_RIGHT);
-                } else { // чужие
-                    vBoxCell.setAlignment(Pos.CENTER_LEFT);
-                    vBoxCell.setStyle("-fx-background-color: rgba(255, 255, 255, 0.3);");
-                    captionPanel.setAlignment(Pos.CENTER_LEFT);
-                }
-            }
-            else { // технические
-                vBoxCell.setAlignment(Pos.CENTER_RIGHT);
-                vBoxCell.setStyle("-fx-background-color: rgba(0,157,253, 0.3);");
-                captionPanel.setAlignment(Pos.CENTER_RIGHT);
-            }
+            setItemStyle(message.getMessageType(), message.getNickFrom());
 
             setText(null);
             setGraphic(vBoxCell);
         }
     }
+
+    private void setItemStyle(MessageType type, String nickFrom) {
+        if (type.equals(MessageType.BROADCAST_MESSAGE) ||
+                type.equals(MessageType.PRIVATE_MESSAGE)) { // сообщения
+            if (nickFrom.equals(nick)) { // свои
+                vBoxCell.setAlignment(Pos.CENTER_RIGHT);
+                vBoxCell.setStyle("-fx-background-color: rgba(255, 165, 0, 0.3);");
+                captionPanel.setAlignment(Pos.CENTER_RIGHT);
+            } else { // чужие
+                vBoxCell.setAlignment(Pos.CENTER_LEFT);
+                vBoxCell.setStyle("-fx-background-color: rgba(255, 255, 255, 0.3);");
+                captionPanel.setAlignment(Pos.CENTER_LEFT);
+            }
+        }
+        else { // технические
+            vBoxCell.setAlignment(Pos.CENTER_RIGHT);
+            vBoxCell.setStyle("-fx-background-color: rgba(0,157,253, 0.3);");
+            captionPanel.setAlignment(Pos.CENTER_RIGHT);
+        }
+    }
+
 }

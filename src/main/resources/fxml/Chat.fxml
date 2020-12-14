@@ -14,7 +14,7 @@
 <VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="ru.leonov.client.fx.ui.Controller" >
     <stylesheets><URL value="@/css/Style.css" /></stylesheets>
 
-    <HBox fx:id="upperPanel" alignment="CENTER_LEFT" minHeight="50" prefHeight="50">
+    <HBox fx:id="authPanel" alignment="CENTER_LEFT" minHeight="50" prefHeight="50">
         <ImageView fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
             <Image url="@../media/logo.png" />
         </ImageView>
@@ -25,7 +25,7 @@
     </HBox>
 
     <ListView fx:id="lvHistory" VBox.vgrow="ALWAYS" />
-    <HBox fx:id="bottomPanel">
+    <HBox fx:id="messagePanel">
         <TextField fx:id="tfMessage" onAction="#sendMessage" promptText="Введите сообщение" HBox.hgrow="ALWAYS" />
         <Button fx:id="btnSend" onAction="#sendMessage" text="ОТПРАВИТЬ" />
     </HBox>

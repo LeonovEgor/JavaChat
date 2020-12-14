@@ -7,11 +7,9 @@ import ru.leonov.messages.MessageType;
 import java.util.ArrayList;
 
 public class StorageHelper implements MessageListener {
-    private String fileName;
-    private Storage<ChatMessage> storage;
+    private final Storage<ChatMessage> storage;
 
     public StorageHelper(String fileName) {
-        this.fileName = fileName;
         storage = new Storage<>(fileName);
     }
 
@@ -23,14 +21,13 @@ public class StorageHelper implements MessageListener {
     }
 
     @Override
-    public void mlPerformAction(ChatMessage message) {
+    public void messageListenerPerformAction(ChatMessage message) {
         if (message.getMessageType().equals(MessageType.BROADCAST_MESSAGE) ||
                 message.getMessageType().equals(MessageType.PRIVATE_MESSAGE)) {
             boolean res = storage.saveMessage(message);
             if (!res) System.out.println("Не удалось сохранить сообщение");
         }
-        else System.out.println("Cервисное сообщение. Сохранение не требуется.");
+        else System.out.println("Сервисное сообщение. Сохранение не требуется.");
     }
-
 
 }

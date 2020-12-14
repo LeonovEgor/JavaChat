@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MessageListenersRegistrator {
 
-    private List<MessageListener> listeners = new ArrayList<>();
+    private final List<MessageListener> listeners = new ArrayList<>();
 
     public void addListener(MessageListener listener){
         this.listeners.add(listener);
@@ -19,7 +19,8 @@ public class MessageListenersRegistrator {
 
     public void fireAction(ChatMessage message){
         for (MessageListener listener : listeners) {
-            listener.mlPerformAction(message);
+            listener.messageListenerPerformAction(message);
         }
     }
+
 }
