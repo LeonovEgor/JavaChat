@@ -5,7 +5,7 @@ import java.util.List;
 
 public class AuthListenersRegistrator {
 
-    private List<AuthListener> listeners = new ArrayList<>();
+    private final List<AuthListener> listeners = new ArrayList<>();
 
     public void addListener(AuthListener listener){
         this.listeners.add(listener);
@@ -20,4 +20,5 @@ public class AuthListenersRegistrator {
             listener.AuthListenerPerformAction(nick);
         }
     }
+
 }

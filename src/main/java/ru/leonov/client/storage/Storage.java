@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 class Storage<T> {
-    private String fileName;
+    private final String fileName;
 
     Storage(String fileName) {
         this.fileName = fileName;

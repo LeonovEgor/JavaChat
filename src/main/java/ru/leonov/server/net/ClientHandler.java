@@ -14,10 +14,10 @@ import java.util.concurrent.ExecutorService;
 public class ClientHandler {
     private static final Logger log = LoggerFactory.getLogger(ClientHandler.class.getName());
 
-    private Socket socket;
+    private final Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private ChatServer server;
+    private final ChatServer server;
     private String nick;
     private boolean isEnding = false;
 
@@ -46,19 +46,6 @@ public class ClientHandler {
                     log.debug(String.format("Сервер завершил работу: %s", info()));
                 }
             });
-// было
-/*            new Thread(() -> {
-                try {
-                    waitForAuth(); // Ожидание авторизации
-                    if (!isEnding) waitForMessage(); // Обработка сообщений
-                } catch (IOException | SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                } finally {
-                    closeConnection();
-                    System.out.println(String.format("Сервер завершил работу: %s", info()));
-                }
-            }).start();*/
-
         } catch (IOException e) {
             log.error("Ошибка", e);
         }
@@ -233,4 +220,5 @@ public class ClientHandler {
                 String.format("Клиент: адрес: %s ник: %s", socket.getInetAddress(), nick)
                 : "Socket не создан!";
     }
+
 }

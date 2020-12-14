@@ -51,15 +51,7 @@ public class Client implements MessageSendable {
     private void closeConnection() {
         try {
             in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();

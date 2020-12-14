@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class ChatMessage implements Serializable{
 
-    private Date date;
+    private final Date date;
     private String nickFrom;
     private String nickTo;
     private String message;
-    private MessageType messageType;
+    private final MessageType messageType;
     private String login;
     private int passHash;
 

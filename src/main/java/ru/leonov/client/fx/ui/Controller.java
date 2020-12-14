@@ -29,10 +29,10 @@ public class Controller implements MessageListener, AuthListener, Initializable 
     Button btnSend;
 
     @FXML
-    HBox bottomPanel;
+    HBox messagePanel;
 
     @FXML
-    HBox upperPanel;
+    HBox authPanel;
 
     @FXML
     TextField loginField;
@@ -49,17 +49,10 @@ public class Controller implements MessageListener, AuthListener, Initializable 
     }
 
     public void setAuthorized(boolean isAuthorized) {
-        if (!isAuthorized) {
-            upperPanel.setVisible(true);
-            upperPanel.setManaged(true);
-            bottomPanel.setVisible(false);
-            bottomPanel.setManaged(false);
-        } else {
-            upperPanel.setVisible(false);
-            upperPanel.setManaged(false);
-            bottomPanel.setVisible(true);
-            bottomPanel.setManaged(true);
-        }
+        authPanel.setVisible(!isAuthorized);
+        authPanel.setManaged(!isAuthorized);
+        messagePanel.setVisible(isAuthorized);
+        messagePanel.setManaged(isAuthorized);
     }
 
     public void setSender(MessageSendable sender) {
@@ -90,7 +83,7 @@ public class Controller implements MessageListener, AuthListener, Initializable 
     }
 
     @Override
-    public void mlPerformAction(ChatMessage message) {
+    public void messageListenerPerformAction(ChatMessage message) {
         if (message.getMessageType().equals(MessageType.END)) {
             System.out.println("Приложение закрывается");
             Platform.exit();
